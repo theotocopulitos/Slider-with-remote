@@ -36,15 +36,26 @@ AccelStepper stepper1(1, 12, 11);
 #define gotoPositionB    0x1010
 #define speedToggle      0x100C
 
+#define rotateLeft_13       0x40BFB24D
+#define rotateRight_13      0x40BFF20D
+#define savePositionA_13    0x40BF708F
+#define savePositionB_13    0x40BFB04F
+#define gotoPositionA_13    0x40BF50AF
+#define gotoPositionB_13    0x40BFA857
+#define speedUp_13          0x40BFAA55		
+#define speedReset_13       0x40BF2AD5
+#define speedDown_13        0x40BFCA35
+#define stop_13             0x40BF00FF
+
 #define printDebug       1
  
 
-int buttonState = 0;
+//int buttonState = 0;
 //int stepNumber = 0;
 //int curSpeed = 7000;
 int dir = 0;
 //int maxSpeed = 10000;
-int accel = 30000;
+int accel = 1000;
 
 long savedPosA = 0;
 long savedPosB = 0;
@@ -54,13 +65,11 @@ IRdecode My_Decoder;
  
 
 //float fMaxSpeed = 10000.0;
-float speedSlow = 400.0;
-float speedFast = 7 Stepper Motor Single Channel Manual Controller
- language: Wiring/Arduino Stepper Motor Single Channel Manual Controller
- language: Wiring/Arduino Stepper Motor Single Channel Manual Controller
- language: Wiring/Arduino Stepper Motor Single Channel Manual Controller
- language: Wiring/Arduino00.0;
-float fStepsPerSecond = speedFast;
+float speedSlow = 300.0;
+float speedFast = 400.0;
+float speedMax = 1000.0;
+float speedCurr = speedFast;
+float fStepsPerSecond = speedCurr;
 
 void setup() 
 {
@@ -82,7 +91,7 @@ void setup()
   blink(2);
   
   stepper1.setMaxSpeed(10000.0);
-  stepper1.setAcceleration(10000.0);
+  stepper1.setAcceleration(accel);
 }
 
 
@@ -113,21 +122,58 @@ void loop()
     }
 
 
-  if(My_Decoder.value==rotateLeft)
+  if(My_Decoder.value==speedDown_13)
+  {
+    if (fStepsPerSecond < 100.0)
+      {      
+        fStepsPerSecond = fStepsPerSecond - 50.0;
+        if (stepper1.speed() < 0) // to keep correct direction
+            {stepper1.setSpeed(-fStepsPerSecond);}
+        else {stepper1.setSpeed(fStepsPerSecond);}
+      }
+    Serial.print("Using speed:");
+    Serial.println(fStepsPerSecond);
+    My_Receiver.resume();
+    }
+   
+    
+  if(My_Decoder.value==speedUp_13)
+  {
+    if (fStepsPerSecond < speedMax)
+      {      
+        fStepsPerSecond = fStepsPerSecond + 50.0;
+        if (stepper1.speed() < 0) // to keep correct direction
+            {stepper1.setSpeed(-fStepsPerSecond);}
+        else {stepper1.setSpeed(fStepsPerSecond);}
+      }
+    Serial.print("Using speed:");
+    Serial.println(fStepsPerSecond);;
+    My_Receiver.resume();
+    }
+
+
+
+  if(My_Decoder.value==rotateLeft || My_Decoder.value==rotateLeft_13)
   {
     stepper1.setSpeed(-fStepsPerSecond);
-      stepper1.runSpeed();
+    stepper1.runSpeed();
+    My_Receiver.resume();
+    //Serial.print("Using speed:");
+    //Serial.println(fStepsPerSecond);
     }
   
 
-  else if (My_Decoder.value==rotateRight)
+  else if (My_Decoder.value==rotateRight || My_Decoder.value==rotateRight_13)
   {
     stepper1.setSpeed(fStepsPerSecond);
     stepper1.runSpeed();
-    }
+    My_Receiver.resume();
+    //Serial.print("Using speed:");
+    //Serial.println(fStepsPerSecond);  
+  }
   
 
-  if(My_Decoder.value==savePositionA)
+  if(My_Decoder.value==savePositionA || My_Decoder.value==savePositionA_13)
   {
     savedPosA = stepper1.currentPosition();
     if (printDebug)
@@ -137,7 +183,7 @@ void loop()
     }
   }
 
-  if(My_Decoder.value==savePositionB)
+  if(My_Decoder.value==savePositionB || My_Decoder.value==savePositionB_13)
   {
     savedPosB = stepper1.currentPosition();
     if (printDebug)
@@ -148,7 +194,7 @@ void loop()
   }
 
   // Check to see if the user wants to go to position A or B
-  if(My_Decoder.value==gotoPositionA)
+  if(My_Decoder.value==gotoPositionA || My_Decoder.value==gotoPositionA_13)
   {
     if (printDebug)
     {
@@ -179,7 +225,7 @@ void loop()
     }
   }
 
-  else if (My_Decoder.value==gotoPositionB)
+  else if (My_Decoder.value==gotoPositionB || My_Decoder.value==gotoPositionB_13)
   {
     // Yup, let's go to position B
     if (printDebug)
