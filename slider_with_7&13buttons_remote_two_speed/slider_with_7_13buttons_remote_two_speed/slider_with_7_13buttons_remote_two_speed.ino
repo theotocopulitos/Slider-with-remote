@@ -39,7 +39,7 @@ AccelStepper stepper1(1, 12, 11);
 #define printDebug       1
  
 
-//int buttonState = 0;
+int buttonState = 0;
 //int stepNumber = 0;
 //int curSpeed = 7000;
 int dir = 0;
@@ -55,7 +55,11 @@ IRdecode My_Decoder;
 
 //float fMaxSpeed = 10000.0;
 float speedSlow = 400.0;
-float speedFast = 650.0;
+float speedFast = 7 Stepper Motor Single Channel Manual Controller
+ language: Wiring/Arduino Stepper Motor Single Channel Manual Controller
+ language: Wiring/Arduino Stepper Motor Single Channel Manual Controller
+ language: Wiring/Arduino Stepper Motor Single Channel Manual Controller
+ language: Wiring/Arduino00.0;
 float fStepsPerSecond = speedFast;
 
 void setup() 
@@ -96,10 +100,16 @@ void loop()
   if(My_Decoder.value==speedToggle)
   {
     if (fStepsPerSecond==speedSlow){
-      fStepsPerSecond = speedFast;
-    }
-    else {fStepsPerSecond = speedSlow;}
-    stepper1.setSpeed(-fStepsPerSecond);
+        fStepsPerSecond = speedFast;
+       }
+    else {
+        fStepsPerSecond = speedSlow;}
+        
+    if (stepper1.speed() < 0) // to keep correct direction
+      {stepper1.setSpeed(-fStepsPerSecond);}
+      else {stepper1.setSpeed(fStepsPerSecond);}
+    Serial.print("Using speed:");
+    Serial.println(fStepsPerSecond);;
     }
 
 
