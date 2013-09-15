@@ -133,7 +133,6 @@ void loop()
       }
     Serial.print("Using speed:");
     Serial.println(fStepsPerSecond);
-    My_Receiver.resume();
     }
    
     
@@ -148,7 +147,6 @@ void loop()
       }
     Serial.print("Using speed:");
     Serial.println(fStepsPerSecond);;
-    My_Receiver.resume();
     }
 
 
@@ -157,7 +155,6 @@ void loop()
   {
     stepper1.setSpeed(-fStepsPerSecond);
     stepper1.runSpeed();
-    My_Receiver.resume();
     //Serial.print("Using speed:");
     //Serial.println(fStepsPerSecond);
     }
@@ -167,7 +164,6 @@ void loop()
   {
     stepper1.setSpeed(fStepsPerSecond);
     stepper1.runSpeed();
-    My_Receiver.resume();
     //Serial.print("Using speed:");
     //Serial.println(fStepsPerSecond);  
   }
