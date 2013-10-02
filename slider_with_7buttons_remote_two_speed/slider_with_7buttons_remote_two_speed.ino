@@ -44,7 +44,7 @@ AccelStepper stepper1(1, 12, 11);
 //int curSpeed = 7000;
 int dir = 0;
 //int maxSpeed = 10000;
-int accel = 30000;
+int accel = 3000;
 
 long savedPosA = 0;
 long savedPosB = 0;
@@ -52,10 +52,10 @@ long savedPosB = 0;
 IRrecv My_Receiver(remotePin);//Receive on pin remotePin
 IRdecode My_Decoder; 
  
-
+// This speed needs to be around 500 for non microstepping (MS1=MS2=GROUND) and around 5000 for total microstepping (MS1=MS2=open)
 //float fMaxSpeed = 10000.0;
-float speedSlow = 400.0;
-float speedFast = 650.0;
+float speedSlow = 600.0;
+float speedFast = 750.0;
 float fStepsPerSecond = speedFast;
 
 void setup() 

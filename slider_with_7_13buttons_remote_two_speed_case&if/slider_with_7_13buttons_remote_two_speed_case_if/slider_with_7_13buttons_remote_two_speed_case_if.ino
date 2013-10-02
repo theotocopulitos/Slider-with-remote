@@ -70,6 +70,7 @@ IRdecode My_Decoder;
  
 
 //float fMaxSpeed = 10000.0;
+// This speed needs to be around 500 for non microstepping (MS1=MS2=GROUND) and around 5000 for total microstepping (MS1=MS2=open)
 float speedSlow = 300.0;
 float speedFast = 600.0;
 float speedMax = 1000.0;

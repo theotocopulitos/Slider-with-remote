@@ -42,7 +42,7 @@ AccelStepper stepper1(1, 12, 11);
 //int curSpeed = 7000;
 int dir = 0;
 //int maxSpeed = 10000;
-int accel = 30000;
+int accel = 2000;
 
 long savedPosA = 0;
 long savedPosB = 0;
@@ -52,7 +52,8 @@ IRdecode My_Decoder;
  
 
 //float fMaxSpeed = 10000.0;
-float fStepsPerSecond = 6000.0;
+// This speed needs to be around 500 for non microstepping (MS1=MS2=GROUND) and around 5000 for total microstepping (MS1=MS2=open)
+float fStepsPerSecond = 700.0;
 
 void setup() 
 {
